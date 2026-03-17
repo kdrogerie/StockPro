@@ -1729,6 +1729,30 @@ function copySQL() {
   navigator.clipboard.writeText(sql).then(() => showToast('SQL gekopieerd!', 'success'));
 }
 
+async function loadFromSupabase() {
+  if (!state.config.url || !state.config.key) return;
+  if (!window.supabase || !window.supabase.createClient) {
+    showToast('Supabase client niet gevonden.', 'error');
+    return;
+  }
+
+  const client = window.supabase.createClient(state.config.url, state.config.key);
+
+  const { data, error } = await client
+    .from('artikelen')
+    .select('id, sku, naam, beschrijving, voorraad, min_voorraad, status');
+
+  if (error) {
+    showToast('Fout bij laden uit Supabase: ' + error.message, 'error');
+    return;
+  }
+
+  state.artikelen = data || [];
+  saveState();
+  renderArtikelen();
+  renderDashboard();
+}
+  
 // ========================
 // DEMO DATA
 // ========================
