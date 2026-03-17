@@ -1224,19 +1224,24 @@ let gtinCounter = 0;
 
 function openModal(id) {
   document.getElementById(id).classList.add('open');
+
+  // Alleen resetten als we echt een nieuw artikel maken
   if (id === 'artikelModal') {
-    document.getElementById('edit-id').value = '';
-    document.getElementById('modalTitle').textContent = 'Nieuw Artikel';
-    document.getElementById('form-sku').value = '';
-    document.getElementById('form-naam').value = '';
-    document.getElementById('form-voorraad').value = 0;
-    document.getElementById('form-min').value = 5;
-    document.getElementById('form-beschrijving').value = '';
-    document.getElementById('gtin-list').innerHTML = '';
-    gtinCounter = 0;
-    addGTIN();
+    const isEdit = !!document.getElementById('edit-id').value;
+    if (!isEdit) {
+      document.getElementById('modalTitle').textContent = 'Nieuw Artikel';
+      document.getElementById('form-sku').value = '';
+      document.getElementById('form-naam').value = '';
+      document.getElementById('form-voorraad').value = 0;
+      document.getElementById('form-min').value = 5;
+      document.getElementById('form-beschrijving').value = '';
+      document.getElementById('gtin-list').innerHTML = '';
+      gtinCounter = 0;
+      addGTIN();
+    }
   }
 }
+
 
 function closeModal(id) {
   document.getElementById(id).classList.remove('open');
