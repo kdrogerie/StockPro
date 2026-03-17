@@ -1226,6 +1226,14 @@ function loadState() {
   } catch(e) {}
 }
 
+const shop = localStorage.getItem('stockpro-shopify');
+if (shop) {
+  state.shopify = JSON.parse(shop);
+  document.getElementById('cfg-shopify-url').value = state.shopify.storeUrl || '';
+  document.getElementById('cfg-shopify-token').value = state.shopify.token || '';
+  document.getElementById('cfg-shopify-edge').value = state.shopify.edgeUrl || '';
+}
+  
 function saveState() {
   localStorage.setItem('stockpro-data', JSON.stringify({
     artikelen: state.artikelen,
