@@ -6,7 +6,7 @@
 <title>VoorraadbeheerPro</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <style>
+<style>
   :root {
     --bg: #0e0f11;
     --surface: #16181d;
@@ -32,7 +32,6 @@
     overflow-x: hidden;
   }
 
-  /* BACKGROUND GRID */
   body::before {
     content: '';
     position: fixed;
@@ -53,7 +52,6 @@
     height: 100vh;
   }
 
-  /* SIDEBAR */
   .sidebar {
     width: 240px;
     background: var(--surface);
@@ -150,7 +148,6 @@
   }
   .status-dot.connected { background: var(--accent); box-shadow: 0 0 6px var(--accent); }
 
-  /* MAIN */
   .main {
     flex: 1;
     overflow: auto;
@@ -238,7 +235,6 @@
 
   .content { padding: 28px; flex: 1; }
 
-  /* STATS */
   .stats-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -273,7 +269,6 @@
   .stat-value { font-family: 'Syne', sans-serif; font-size: 32px; font-weight: 800; margin: 6px 0 2px; }
   .stat-sub { font-size: 11px; color: var(--text2); }
 
-  /* TABLE */
   .table-container {
     background: var(--surface);
     border: 1px solid var(--border);
@@ -296,10 +291,7 @@
     font-weight: 700;
   }
 
-  table {
-    width: 100%;
-    border-collapse: collapse;
-  }
+  table { width: 100%; border-collapse: collapse; }
 
   thead th {
     text-align: left;
@@ -352,7 +344,6 @@
 
   .actions { display: flex; gap: 6px; }
 
-  /* MODAL */
   .modal-overlay {
     position: fixed;
     inset: 0;
@@ -421,7 +412,6 @@
     justify-content: flex-end;
   }
 
-  /* FORM */
   .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
   .form-full { grid-column: 1 / -1; }
 
@@ -440,9 +430,7 @@
     transition: border-color 0.15s;
     width: 100%;
   }
-  .form-input:focus, .form-select:focus, .form-textarea:focus {
-    border-color: var(--accent);
-  }
+  .form-input:focus, .form-select:focus, .form-textarea:focus { border-color: var(--accent); }
   .form-select option { background: var(--surface); }
   .form-textarea { resize: vertical; min-height: 80px; }
 
@@ -452,7 +440,6 @@
     margin: 20px 0;
   }
 
-  /* GTIN SECTION */
   .gtin-list { display: flex; flex-direction: column; gap: 10px; margin-top: 8px; }
 
   .gtin-item {
@@ -511,7 +498,6 @@
   }
   .country-toggle.active { background: rgba(255,165,2,0.15); color: var(--warning); border-color: rgba(255,165,2,0.3); }
 
-  /* SCANNER */
   .scanner-area {
     background: var(--surface);
     border: 2px dashed var(--border);
@@ -547,7 +533,6 @@
     justify-content: space-between;
   }
 
-  /* MUTATIE HISTORY */
   .mutatie-item {
     display: flex;
     align-items: center;
@@ -579,7 +564,6 @@
   .mutatie-qty.in { color: var(--accent); }
   .mutatie-qty.out { color: var(--danger); }
 
-  /* TOAST */
   .toast-container {
     position: fixed;
     bottom: 24px;
@@ -612,7 +596,6 @@
     to { transform: translateX(0); opacity: 1; }
   }
 
-  /* SUPABASE SETUP */
   .setup-card {
     background: var(--surface);
     border: 1px solid var(--border);
@@ -620,11 +603,7 @@
     padding: 24px;
     margin-bottom: 16px;
   }
-  .setup-step {
-    display: flex;
-    gap: 16px;
-    margin-bottom: 16px;
-  }
+  .setup-step { display: flex; gap: 16px; margin-bottom: 16px; }
   .step-num {
     width: 28px;
     height: 28px;
@@ -654,7 +633,6 @@
     line-height: 1.7;
   }
 
-  /* TABS */
   .tabs {
     display: flex;
     gap: 4px;
@@ -680,7 +658,6 @@
     border-color: var(--border);
   }
 
-  /* EMPTY STATE */
   .empty-state {
     text-align: center;
     padding: 60px 20px;
@@ -690,18 +667,15 @@
   .empty-title { font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
   .empty-sub { font-size: 13px; line-height: 1.6; }
 
-  /* RESPONSIVE */
   @media (max-width: 768px) {
     .sidebar { display: none; }
     .stats-grid { grid-template-columns: 1fr 1fr; }
     .form-grid { grid-template-columns: 1fr; }
   }
 
-  /* PAGE VISIBILITY */
   .page { display: none; }
   .page.active { display: block; }
 
-  /* SETTINGS */
   .settings-section {
     background: var(--surface);
     border: 1px solid var(--border);
@@ -729,9 +703,7 @@
 </style>
 </head>
 <body>
-
 <div class="app">
-  <!-- SIDEBAR -->
   <aside class="sidebar">
     <div class="logo">
       <div class="logo-text">Stock·Pro</div>
@@ -767,9 +739,7 @@
     </div>
   </aside>
 
-  <!-- MAIN -->
   <main class="main">
-    <!-- TOPBAR -->
     <div class="topbar">
       <div class="page-title" id="pageTitle">Dashboard</div>
       <div class="search-bar">
@@ -779,10 +749,7 @@
       <button class="btn btn-primary" onclick="openModal('artikelModal')" id="topBtn">+ Nieuw Artikel</button>
     </div>
 
-    <!-- CONTENT -->
     <div class="content">
-
-      <!-- DASHBOARD PAGE -->
       <div class="page active" id="page-dashboard">
         <div class="stats-grid">
           <div class="stat-card">
@@ -815,13 +782,12 @@
             <div class="empty-state">
               <div class="empty-icon">📭</div>
               <div class="empty-title">Geen mutaties</div>
-              <div class="empty-sub">Voer een artikel in of gebruik de scanner om te beginnen</div>
+              <div class="empty-sub">Voer een mutatie in om te beginnen</div>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- ARTIKELEN PAGE -->
       <div class="page" id="page-artikelen">
         <div class="table-container">
           <div class="table-header">
@@ -838,7 +804,6 @@
         </div>
       </div>
 
-      <!-- MUTATIES PAGE -->
       <div class="page" id="page-mutaties">
         <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px;">
           <button class="btn btn-primary" style="justify-content:center; padding:16px;" onclick="openMutatieModal('in')">
@@ -862,7 +827,6 @@
         </div>
       </div>
 
-      <!-- SCANNER PAGE -->
       <div class="page" id="page-scanner">
         <div class="tabs">
           <div class="tab active" onclick="switchScannerTab('inkomend', this)">📥 Inkomend</div>
@@ -890,7 +854,6 @@
         <div id="scan-results"></div>
       </div>
 
-      <!-- INSTELLINGEN PAGE -->
       <div class="page" id="page-instellingen">
         <div class="settings-section">
           <h3>🗄️ Supabase Database</h3>
@@ -918,10 +881,10 @@
               <label class="form-label">Access Token</label>
               <input class="form-input" type="password" id="cfg-shopify-token" placeholder="shpat_xxxxx">
             </div>
-          </div>
-          <div class="form-group form-full">
-            <label class="form-label">Edge Function URL</label>
-            <input class="form-input" type="text" id="cfg-shopify-edge" placeholder="https://...supabase.co/functions/v1/shopify-proxy">
+            <div class="form-group form-full">
+              <label class="form-label">Edge Function URL</label>
+              <input class="form-input" type="text" id="cfg-shopify-edge" placeholder="https://...supabase.co/functions/v1/shopify-proxy">
+            </div>
           </div>
           <button class="btn btn-secondary" style="margin-top:14px" onclick="saveShopifyConfig()">Opslaan</button>
         </div>
@@ -957,7 +920,6 @@
         </div>
       </div>
 
-      <!-- SETUP PAGE -->
       <div class="page" id="page-setup">
         <div class="setup-card">
           <h3 style="font-family:'Syne',sans-serif; font-size:18px; font-weight:800; margin-bottom:20px;">
@@ -1100,7 +1062,6 @@ CREATE POLICY "Alles toestaan" ON mutaties FOR ALL USING (true) WITH CHECK (true
   </main>
 </div>
 
-<!-- ARTIKEL MODAL -->
 <div class="modal-overlay" id="artikelModal">
   <div class="modal">
     <div class="modal-header">
@@ -1148,7 +1109,6 @@ CREATE POLICY "Alles toestaan" ON mutaties FOR ALL USING (true) WITH CHECK (true
   </div>
 </div>
 
-<!-- MUTATIE MODAL -->
 <div class="modal-overlay" id="mutatieModal">
   <div class="modal" style="max-width:420px">
     <div class="modal-header">
@@ -1191,13 +1151,9 @@ CREATE POLICY "Alles toestaan" ON mutaties FOR ALL USING (true) WITH CHECK (true
   </div>
 </div>
 
-<!-- TOAST CONTAINER -->
 <div class="toast-container" id="toastContainer"></div>
 
 <script>
-// ========================
-// STATE
-// ========================
 let state = {
   artikelen: [],
   mutaties: [],
@@ -1206,8 +1162,6 @@ let state = {
   scannerMode: 'inkomend'
 };
 
-
-// Load from localStorage
 function loadState() {
   try {
     const saved = localStorage.getItem('stockpro-data');
@@ -1223,17 +1177,16 @@ function loadState() {
       document.getElementById('cfg-key').value = state.config.key || '';
       if (state.config.url && state.config.key) updateDbStatus(true);
     }
+    const shop = localStorage.getItem('stockpro-shopify');
+    if (shop) {
+      state.shopify = JSON.parse(shop);
+      document.getElementById('cfg-shopify-url').value = state.shopify.storeUrl || '';
+      document.getElementById('cfg-shopify-token').value = state.shopify.token || '';
+      document.getElementById('cfg-shopify-edge').value = state.shopify.edgeUrl || '';
+    }
   } catch(e) {}
 }
 
-const shop = localStorage.getItem('stockpro-shopify');
-if (shop) {
-  state.shopify = JSON.parse(shop);
-  document.getElementById('cfg-shopify-url').value = state.shopify.storeUrl || '';
-  document.getElementById('cfg-shopify-token').value = state.shopify.token || '';
-  document.getElementById('cfg-shopify-edge').value = state.shopify.edgeUrl || '';
-}
-  
 function saveState() {
   localStorage.setItem('stockpro-data', JSON.stringify({
     artikelen: state.artikelen,
@@ -1241,31 +1194,32 @@ function saveState() {
   }));
 }
 
-// ========================
-// NAVIGATION
-// ========================
 function navigate(page) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
   document.getElementById('page-' + page).classList.add('active');
 
-  const titles = { dashboard:'Dashboard', artikelen:'Artikelen', mutaties:'Mutaties', scanner:'Scanner', instellingen:'Instellingen', setup:'Database Setup' };
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  const titles = {
+    dashboard: 'Dashboard',
+    artikelen: 'Artikelen',
+    mutaties: 'Mutaties',
+    scanner: 'Scanner',
+    instellingen: 'Instellingen',
+    setup: 'Database Setup'
+  };
   document.getElementById('pageTitle').textContent = titles[page] || page;
-
-  const navItems = document.querySelectorAll('.nav-item');
-  navItems.forEach(n => { if(n.textContent.includes(titles[page])) n.classList.add('active'); });
+  document.querySelectorAll('.nav-item').forEach(n => {
+    if (n.textContent.includes(titles[page])) n.classList.add('active');
+  });
 
   const topBtn = document.getElementById('topBtn');
-  topBtn.style.display = page === 'artikelen' || page === 'dashboard' ? 'flex' : 'none';
+  topBtn.style.display = (page === 'artikelen' || page === 'dashboard') ? 'flex' : 'none';
 
   if (page === 'dashboard') renderDashboard();
   if (page === 'artikelen') renderArtikelen();
   if (page === 'mutaties') renderMutaties();
 }
 
-// ========================
-// ARTIKEL MODAL
-// ========================
 let gtinCounter = 0;
 
 function openModal(id) {
@@ -1297,7 +1251,7 @@ function addGTIN(data = {}) {
   <div class="gtin-item" id="gtin-${id}">
     <div class="gtin-item-header">
       <span style="font-size:11px; color:var(--text2)">GTIN #${id}</span>
-      <button class="btn btn-danger btn-sm" onclick="removeGTIN(${id})">× Verwijder</button>
+      <button class="btn btn-danger btn-sm" onclick="removeGTIN(${id})">Verwijder</button>
     </div>
     <div class="gtin-item-grid">
       <div class="form-group">
@@ -1317,17 +1271,17 @@ function addGTIN(data = {}) {
     <div style="margin-top:10px;">
       <div class="form-label" style="margin-bottom:6px">Kanalen</div>
       <div class="gtin-channels" id="gtin-channels-${id}">
-        <span class="channel-toggle ${channels.includes('Shopify')?'active-shopify':''}" onclick="toggleChannel(this, ${id}, 'Shopify')">🛒 Shopify</span>
-        <span class="channel-toggle ${channels.includes('bol.com')?'active-bol':''}" onclick="toggleChannel(this, ${id}, 'bol.com')">📦 bol.com</span>
-        <span class="channel-toggle ${channels.includes('Amazon')?'active-amazon':''}" onclick="toggleChannel(this, ${id}, 'Amazon')">🌍 Amazon</span>
+        <span class="channel-toggle ${channels.includes('Shopify')?'active-shopify':''}" onclick="toggleChannel(this, ${id}, 'Shopify')">Shopify</span>
+        <span class="channel-toggle ${channels.includes('bol.com')?'active-bol':''}" onclick="toggleChannel(this, ${id}, 'bol.com')">bol.com</span>
+        <span class="channel-toggle ${channels.includes('Amazon')?'active-amazon':''}" onclick="toggleChannel(this, ${id}, 'Amazon')">Amazon</span>
       </div>
     </div>
     <div style="margin-top:10px;">
       <div class="form-label" style="margin-bottom:6px">Landen</div>
       <div class="gtin-channels" id="gtin-landen-${id}">
-        <span class="country-toggle ${landen.includes('NL')?'active':''}" onclick="toggleLand(this, ${id}, 'NL')">🇳🇱 NL</span>
-        <span class="country-toggle ${landen.includes('BE')?'active':''}" onclick="toggleLand(this, ${id}, 'BE')">🇧🇪 BE</span>
-        <span class="country-toggle ${landen.includes('DE')?'active':''}" onclick="toggleLand(this, ${id}, 'DE')">🇩🇪 DE</span>
+        <span class="country-toggle ${landen.includes('NL')?'active':''}" onclick="toggleLand(this, ${id}, 'NL')">NL</span>
+        <span class="country-toggle ${landen.includes('BE')?'active':''}" onclick="toggleLand(this, ${id}, 'BE')">BE</span>
+        <span class="country-toggle ${landen.includes('DE')?'active':''}" onclick="toggleLand(this, ${id}, 'DE')">DE</span>
       </div>
     </div>
   </div>`;
@@ -1337,7 +1291,7 @@ function addGTIN(data = {}) {
 
 function removeGTIN(id) {
   const el = document.getElementById('gtin-' + id);
-  if(el) el.remove();
+  if (el) el.remove();
 }
 
 function toggleChannel(el, id, channel) {
@@ -1358,27 +1312,23 @@ function collectGTINs() {
     const i = idMatch[1];
     const val = document.getElementById('gtin-val-' + i)?.value?.trim();
     if (!val) return;
+    const type = document.getElementById('gtin-type-' + i)?.value || 'EAN-13';
+
     const channels = [];
     document.querySelectorAll(`#gtin-channels-${i} .channel-toggle`).forEach(c => {
-      if (c.className.includes('active-')) channels.push(c.textContent.trim().replace(/^[^\s]+ /, ''));
+      if (c.className.includes('active-')) channels.push(c.textContent.trim());
     });
+
     const landen = [];
     document.querySelectorAll(`#gtin-landen-${i} .country-toggle.active`).forEach(c => {
-      landen.push(c.dataset?.land || c.textContent.trim().replace(/[^A-Z]/g, ''));
+      landen.push(c.textContent.trim());
     });
-    result.push({
-      gtin: val,
-      type: document.getElementById('gtin-type-' + i)?.value,
-      channels,
-      landen
-    });
+
+    result.push({ gtin: val, type, channels, landen });
   });
   return result;
 }
 
-// ========================
-// CRUD ARTIKELEN
-// ========================
 function saveArtikel() {
   const id = document.getElementById('edit-id').value;
   const sku = document.getElementById('form-sku').value.trim();
@@ -1388,15 +1338,30 @@ function saveArtikel() {
   const beschrijving = document.getElementById('form-beschrijving').value.trim();
   const gtins = collectGTINs();
 
-  if (!sku || !naam) { showToast('Vul SKU en naam in!', 'error'); return; }
+  if (!sku || !naam) {
+    showToast('Vul SKU en naam in!', 'error');
+    return;
+  }
 
-  const artikel = { id: id || genId(), sku, naam, voorraad, min_voorraad: min, beschrijving, gtins, created_at: new Date().toISOString() };
+  const artikel = {
+    id: id || genId(),
+    sku,
+    naam,
+    voorraad,
+    min_voorraad: min,
+    beschrijving,
+    gtins,
+    created_at: new Date().toISOString()
+  };
 
   if (id) {
     const idx = state.artikelen.findIndex(a => a.id === id);
     if (idx > -1) state.artikelen[idx] = { ...state.artikelen[idx], ...artikel };
   } else {
-    if (state.artikelen.find(a => a.sku === sku)) { showToast('SKU bestaat al!', 'error'); return; }
+    if (state.artikelen.find(a => a.sku === sku)) {
+      showToast('SKU bestaat al!', 'error');
+      return;
+    }
     state.artikelen.push(artikel);
   }
 
@@ -1404,7 +1369,7 @@ function saveArtikel() {
   closeModal('artikelModal');
   renderArtikelen();
   renderDashboard();
-  showToast(`Artikel "${naam}" opgeslagen ✓`, 'success');
+  showToast('Artikel "' + naam + '" opgeslagen.', 'success');
 }
 
 function editArtikel(id) {
@@ -1419,8 +1384,11 @@ function editArtikel(id) {
   document.getElementById('form-beschrijving').value = a.beschrijving || '';
   document.getElementById('gtin-list').innerHTML = '';
   gtinCounter = 0;
-  (a.gtins || []).forEach(g => addGTIN(g));
-  if (!a.gtins?.length) addGTIN();
+  if (a.gtins && a.gtins.length) {
+    a.gtins.forEach(g => addGTIN(g));
+  } else {
+    addGTIN();
+  }
   openModal('artikelModal');
 }
 
@@ -1430,58 +1398,80 @@ function deleteArtikel(id) {
   saveState();
   renderArtikelen();
   renderDashboard();
-  showToast('Artikel verwijderd', 'info');
+  showToast('Artikel verwijderd.', 'info');
 }
 
-// ========================
-// RENDER ARTIKELEN
-// ========================
 function renderArtikelen(filter = '') {
-  const list = filter
-    ? state.artikelen.filter(a => a.naam.toLowerCase().includes(filter) || a.sku.toLowerCase().includes(filter))
+  const query = filter.toLowerCase();
+  const list = query
+    ? state.artikelen.filter(a =>
+        a.naam.toLowerCase().includes(query) ||
+        a.sku.toLowerCase().includes(query))
     : state.artikelen;
 
   if (!list.length) {
-    document.getElementById('artikelen-table').innerHTML = `<div class="empty-state"><div class="empty-icon">📦</div><div class="empty-title">Geen artikelen gevonden</div><div class="empty-sub">Klik op "+ Nieuw Artikel" om te beginnen</div></div>`;
+    document.getElementById('artikelen-table').innerHTML = `
+      <div class="empty-state">
+        <div class="empty-icon">📦</div>
+        <div class="empty-title">Geen artikelen gevonden</div>
+        <div class="empty-sub">Klik op "+ Nieuw Artikel" om te beginnen</div>
+      </div>
+    `;
     return;
   }
 
   const rows = list.map(a => {
-    const stockClass = a.voorraad <= 0 ? 'stock-low' : a.voorraad < a.min_voorraad ? 'stock-warn' : 'stock-ok';
-    const channelBadges = [...new Set((a.gtins || []).flatMap(g => g.channels || []))]
-      .map(c => `<span class="badge badge-${c.replace('.','').replace(' ','-').toLowerCase()}">${c}</span>`).join(' ');
-    const landBadges = [...new Set((a.gtins || []).flatMap(g => g.landen || []))]
-      .map(l => `<span class="badge badge-${l.toLowerCase()}">${l}</span>`).join(' ');
+    const stockClass = a.voorraad <= 0 ? 'stock-low'
+      : a.voorraad < a.min_voorraad ? 'stock-warn'
+      : 'stock-ok';
 
-    return `<tr onclick="editArtikel('${a.id}')">
-      <td><strong>${a.sku}</strong></td>
-      <td>${a.naam}</td>
-      <td class="${stockClass}">${a.voorraad}</td>
-      <td>${(a.gtins || []).length} GTIN${(a.gtins || []).length !== 1 ? "'s" : ''}</td>
-      <td>${channelBadges || '<span style="color:var(--text2)">—</span>'}</td>
-      <td>${landBadges || '<span style="color:var(--text2)">—</span>'}</td>
-      <td><div class="actions" onclick="event.stopPropagation()">
-        <button class="btn btn-secondary btn-sm" onclick="editArtikel('${a.id}')">✏️</button>
-        <button class="btn btn-danger btn-sm" onclick="deleteArtikel('${a.id}')">🗑️</button>
-      </div></td>
-    </tr>`;
+    const channelBadges = [...new Set((a.gtins || []).flatMap(g => g.channels || []))]
+      .map(c => `<span class="badge badge-${c.replace('.','').replace(' ','-').toLowerCase()}">${c}</span>`)
+      .join(' ');
+
+    const landBadges = [...new Set((a.gtins || []).flatMap(g => g.landen || []))]
+      .map(l => `<span class="badge badge-${l.toLowerCase()}">${l}</span>`)
+      .join(' ');
+
+    return `
+      <tr onclick="editArtikel('${a.id}')">
+        <td><strong>${a.sku}</strong></td>
+        <td>${a.naam}</td>
+        <td class="${stockClass}">${a.voorraad}</td>
+        <td>${(a.gtins || []).length} GTIN${(a.gtins || []).length !== 1 ? 's' : ''}</td>
+        <td>${channelBadges || '<span style="color:var(--text2)">—</span>'}</td>
+        <td>${landBadges || '<span style="color:var(--text2)">—</span>'}</td>
+        <td>
+          <div class="actions" onclick="event.stopPropagation()">
+            <button class="btn btn-secondary btn-sm" onclick="editArtikel('${a.id}')">Bewerken</button>
+            <button class="btn btn-danger btn-sm" onclick="deleteArtikel('${a.id}')">Verwijderen</button>
+          </div>
+        </td>
+      </tr>
+    `;
   }).join('');
 
   document.getElementById('artikelen-table').innerHTML = `
     <table>
-      <thead><tr>
-        <th>SKU</th><th>Naam</th><th>Voorraad</th><th>GTIN's</th><th>Kanalen</th><th>Landen</th><th>Acties</th>
-      </tr></thead>
+      <thead>
+        <tr>
+          <th>SKU</th>
+          <th>Naam</th>
+          <th>Voorraad</th>
+          <th>GTIN's</th>
+          <th>Kanalen</th>
+          <th>Landen</th>
+          <th>Acties</th>
+        </tr>
+      </thead>
       <tbody>${rows}</tbody>
-    </table>`;
+    </table>
+  `;
 }
 
-// ========================
-// MUTATIES
-// ========================
 function openMutatieModal(type) {
   document.getElementById('mut-type').value = type;
-  document.getElementById('mutatieTitle').textContent = type === 'in' ? '⬇️ Inkomende Voorraad' : '⬆️ Uitgaande Voorraad';
+  document.getElementById('mutatieTitle').textContent = type === 'in' ? 'Inkomende Voorraad' : 'Uitgaande Voorraad';
   const sel = document.getElementById('mut-artikel');
   sel.innerHTML = '<option value="">-- Selecteer artikel --</option>';
   state.artikelen.forEach(a => {
@@ -1497,13 +1487,16 @@ function saveMutatie() {
   const kanaal = document.getElementById('mut-kanaal').value;
   const notitie = document.getElementById('mut-notitie').value;
 
-  if (!artikelId || !aantal) { showToast('Selecteer artikel en aantal!', 'error'); return; }
+  if (!artikelId || !aantal) {
+    showToast('Selecteer artikel en aantal!', 'error');
+    return;
+  }
 
   const artikel = state.artikelen.find(a => a.id === artikelId);
   if (!artikel) return;
 
   if (type === 'out' && artikel.voorraad < aantal) {
-    showToast(`Niet genoeg voorraad! (${artikel.voorraad} beschikbaar)`, 'error');
+    showToast('Niet genoeg voorraad! (' + artikel.voorraad + ' beschikbaar)', 'error');
     return;
   }
 
@@ -1525,12 +1518,18 @@ function saveMutatie() {
   closeModal('mutatieModal');
   renderMutaties();
   renderDashboard();
-  showToast(`Mutatie verwerkt: ${type === 'in' ? '+' : '-'}${aantal} ${artikel.naam}`, 'success');
+  showToast('Mutatie verwerkt: ' + (type === 'in' ? '+' : '-') + aantal + ' ' + artikel.naam, 'success');
 }
 
 function renderMutaties() {
   if (!state.mutaties.length) {
-    document.getElementById('mutaties-list').innerHTML = `<div class="empty-state"><div class="empty-icon">🔄</div><div class="empty-title">Geen mutaties</div><div class="empty-sub">Nog geen voorraadmutaties geregistreerd</div></div>`;
+    document.getElementById('mutaties-list').innerHTML = `
+      <div class="empty-state">
+        <div class="empty-icon">🔄</div>
+        <div class="empty-title">Geen mutaties</div>
+        <div class="empty-sub">Nog geen voorraadmutaties geregistreerd</div>
+      </div>
+    `;
     return;
   }
   document.getElementById('mutaties-list').innerHTML = state.mutaties.slice(0, 50).map(m => `
@@ -1540,24 +1539,28 @@ function renderMutaties() {
         <div class="mutatie-name">${m.artikel_naam}</div>
         <div class="mutatie-meta">${formatDate(m.created_at)}${m.kanaal ? ' · ' + m.kanaal : ''}${m.notitie ? ' · ' + m.notitie : ''}</div>
       </div>
-      <div class="mutatie-qty ${m.type}">${m.type === 'in' ? '+' : '-'}${m.aantal}</div>
-    </div>`).join('');
+      <div class="mutatie-qty ${m.type === 'in' ? 'in' : 'out'}">${m.type === 'in' ? '+' : '-'}${m.aantal}</div>
+    </div>
+  `).join('');
 }
 
-// ========================
-// DASHBOARD
-// ========================
 function renderDashboard() {
   document.getElementById('stat-artikelen').textContent = state.artikelen.length;
-  document.getElementById('stat-voorraad').textContent = state.artikelen.reduce((s, a) => s + a.voorraad, 0);
-  document.getElementById('stat-laag').textContent = state.artikelen.filter(a => a.voorraad < a.min_voorraad).length;
+  document.getElementById('stat-voorraad').textContent = state.artikelen.reduce((s, a) => s + (a.voorraad || 0), 0);
+  document.getElementById('stat-laag').textContent = state.artikelen.filter(a => (a.voorraad || 0) < (a.min_voorraad || 0)).length;
 
   const today = new Date().toDateString();
   const todayMut = state.mutaties.filter(m => new Date(m.created_at).toDateString() === today);
   document.getElementById('stat-mutaties').textContent = todayMut.length;
 
   if (!state.mutaties.length) {
-    document.getElementById('dashboard-mutaties').innerHTML = `<div class="empty-state"><div class="empty-icon">📭</div><div class="empty-title">Geen mutaties</div><div class="empty-sub">Voer een mutatie in om hier de geschiedenis te zien</div></div>`;
+    document.getElementById('dashboard-mutaties').innerHTML = `
+      <div class="empty-state">
+        <div class="empty-icon">📭</div>
+        <div class="empty-title">Geen mutaties</div>
+        <div class="empty-sub">Voer een mutatie in om hier de geschiedenis te zien</div>
+      </div>
+    `;
     return;
   }
 
@@ -1568,13 +1571,11 @@ function renderDashboard() {
         <div class="mutatie-name">${m.artikel_naam}</div>
         <div class="mutatie-meta">${formatDate(m.created_at)}${m.kanaal ? ' · ' + m.kanaal : ''}</div>
       </div>
-      <div class="mutatie-qty ${m.type}">${m.type === 'in' ? '+' : '-'}${m.aantal}</div>
-    </div>`).join('');
+      <div class="mutatie-qty ${m.type === 'in' ? 'in' : 'out'}">${m.type === 'in' ? '+' : '-'}${m.aantal}</div>
+    </div>
+  `).join('');
 }
 
-// ========================
-// SCANNER
-// ========================
 function switchScannerTab(mode, el) {
   state.scannerMode = mode;
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
@@ -1591,9 +1592,11 @@ function processScan() {
   const val = document.getElementById('scanInput').value.trim();
   const qty = parseInt(document.getElementById('scanQty').value) || 1;
 
-  if (!val) { showToast('Voer een barcode in!', 'error'); return; }
+  if (!val) {
+    showToast('Voer een barcode in!', 'error');
+    return;
+  }
 
-  // Find artikel by GTIN
   let foundArtikel = null;
   let foundGTIN = null;
 
@@ -1612,10 +1615,11 @@ function processScan() {
     document.getElementById('scan-results').innerHTML = `
       <div class="scan-result" style="border-color:var(--danger);">
         <div>
-          <div style="font-weight:500; color:var(--danger)">❌ Niet gevonden: ${val}</div>
+          <div style="font-weight:500; color:var(--danger)">Niet gevonden: ${val}</div>
           <div style="font-size:11px; color:var(--text2)">GTIN niet gevonden in database</div>
         </div>
-      </div>` + document.getElementById('scan-results').innerHTML;
+      </div>
+    ` + document.getElementById('scan-results').innerHTML;
     document.getElementById('scannerArea').style.borderColor = 'var(--danger)';
     setTimeout(() => { document.getElementById('scannerArea').style.borderColor = ''; }, 1500);
     return;
@@ -1624,7 +1628,7 @@ function processScan() {
   const type = state.scannerMode === 'inkomend' ? 'in' : 'out';
 
   if (type === 'out' && foundArtikel.voorraad < qty) {
-    showToast(`Niet genoeg voorraad! (${foundArtikel.voorraad} stuks)`, 'error');
+    showToast('Niet genoeg voorraad! (' + foundArtikel.voorraad + ' stuks)', 'error');
     return;
   }
 
@@ -1647,7 +1651,7 @@ function processScan() {
   const resultHtml = `
     <div class="scan-result" style="border-color:var(--accent)">
       <div>
-        <div style="font-weight:500">✅ ${foundArtikel.naam}</div>
+        <div style="font-weight:500">${foundArtikel.naam}</div>
         <div style="font-size:11px; color:var(--text2)">SKU: ${foundArtikel.sku} · GTIN: ${val}${foundGTIN?.channels?.length ? ' · ' + foundGTIN.channels.join(', ') : ''}</div>
       </div>
       <div style="text-align:right">
@@ -1656,30 +1660,32 @@ function processScan() {
         </div>
         <div style="font-size:11px; color:var(--text2)">Nu: ${foundArtikel.voorraad} stuks</div>
       </div>
-    </div>`;
+    </div>
+  `;
 
   document.getElementById('scan-results').innerHTML = resultHtml + document.getElementById('scan-results').innerHTML;
   document.getElementById('scanInput').value = '';
   document.getElementById('scannerArea').style.borderColor = 'var(--accent)';
   setTimeout(() => { document.getElementById('scannerArea').style.borderColor = ''; }, 800);
-  showToast(`${foundArtikel.naam}: ${type==='in'?'+':'−'}${qty} verwerkt`, 'success');
+  showToast(foundArtikel.naam + ': ' + (type==='in'?'+':'-') + qty + ' verwerkt', 'success');
   renderDashboard();
 }
 
-// ========================
-// CONFIG
-// ========================
 function saveConfig() {
   const url = document.getElementById('cfg-url').value.trim();
   const key = document.getElementById('cfg-key').value.trim();
-  if (!url || !key) { showToast('Vul URL en key in!', 'error'); return; }
+  if (!url || !key) {
+    showToast('Vul URL en key in!', 'error');
+    return;
+  }
   state.config = { url, key };
   localStorage.setItem('stockpro-config', JSON.stringify(state.config));
   updateDbStatus(true);
-  showToast('Verbinding opgeslagen ✓', 'success');
+  showToast('Verbinding opgeslagen.', 'success');
+  loadFromSupabase();
 }
 
-  function saveShopifyConfig() {
+function saveShopifyConfig() {
   const storeUrl = document.getElementById('cfg-shopify-url').value.trim();
   const token = document.getElementById('cfg-shopify-token').value.trim();
   const edgeUrl = document.getElementById('cfg-shopify-edge').value.trim();
@@ -1692,41 +1698,38 @@ function saveConfig() {
 
 function updateDbStatus(connected) {
   document.getElementById('statusDot').className = 'status-dot' + (connected ? ' connected' : '');
-  document.getElementById('statusText').textContent = connected ? 'Verbonden' : 'Niet verbonden';
+  document.getElementById('statusText').textContent = connected ? 'Verbonden met Supabase' : 'Niet verbonden';
 }
 
-// ========================
-// SEARCH
-// ========================
 function handleSearch(val) {
   const current = document.querySelector('.page.active').id;
-  if (current === 'page-artikelen') renderArtikelen(val.toLowerCase());
+  if (current === 'page-artikelen') renderArtikelen(val);
 }
 
-// ========================
-// HELPERS
-// ========================
 function genId() {
   return Date.now().toString(36) + Math.random().toString(36).slice(2);
 }
 
 function formatDate(iso) {
   const d = new Date(iso);
-  return d.toLocaleDateString('nl-NL', { day:'2-digit', month:'2-digit', year:'numeric', hour:'2-digit', minute:'2-digit' });
+  return d.toLocaleDateString('nl-NL', {
+    day:'2-digit', month:'2-digit', year:'numeric',
+    hour:'2-digit', minute:'2-digit'
+  });
 }
 
 function showToast(msg, type = 'info') {
   const t = document.createElement('div');
-  t.className = `toast ${type}`;
+  t.className = 'toast ' + type;
   const icons = { success: '✅', error: '❌', info: 'ℹ️' };
-  t.innerHTML = `<span>${icons[type]}</span><span>${msg}</span>`;
+  t.innerHTML = '<span>' + (icons[type] || 'ℹ️') + '</span><span>' + msg + '</span>';
   document.getElementById('toastContainer').prepend(t);
   setTimeout(() => t.remove(), 3000);
 }
 
 function copySQL() {
   const sql = document.getElementById('sqlScript').textContent;
-  navigator.clipboard.writeText(sql).then(() => showToast('SQL gekopieerd!', 'success'));
+  navigator.clipboard.writeText(sql).then(() => showToast('SQL gekopieerd.', 'success'));
 }
 
 async function loadFromSupabase() {
@@ -1740,7 +1743,7 @@ async function loadFromSupabase() {
 
   const { data, error } = await client
     .from('artikelen')
-    .select('id, sku, naam, beschrijving, voorraad, min_voorraad, status');
+    .select('id, sku, naam, beschrijving, voorraad, min_voorraad, gtins, created_at');
 
   if (error) {
     showToast('Fout bij laden uit Supabase: ' + error.message, 'error');
@@ -1752,16 +1755,17 @@ async function loadFromSupabase() {
   renderArtikelen();
   renderDashboard();
 }
-  
-// ========================
-// DEMO DATA
-// ========================
+
 function loadDemoData() {
   if (state.artikelen.length) return;
   state.artikelen = [
     {
-      id: genId(), sku: 'PROD-001', naam: 'Houten Snijplank Premium',
-      voorraad: 24, min_voorraad: 5, beschrijving: 'Bamboe snijplank 30x20cm',
+      id: genId(),
+      sku: 'PROD-001',
+      naam: 'Houten Snijplank Premium',
+      voorraad: 24,
+      min_voorraad: 5,
+      beschrijving: 'Bamboe snijplank 30x20cm',
       gtins: [
         { gtin: '8710001234567', type: 'EAN-13', channels: ['Shopify', 'bol.com'], landen: ['NL', 'BE'] },
         { gtin: '0012345678901', type: 'UPC-A', channels: ['Amazon'], landen: ['DE'] }
@@ -1769,16 +1773,24 @@ function loadDemoData() {
       created_at: new Date().toISOString()
     },
     {
-      id: genId(), sku: 'PROD-002', naam: 'Koffiemok XL',
-      voorraad: 3, min_voorraad: 10, beschrijving: 'Grote keramische mok 500ml',
+      id: genId(),
+      sku: 'PROD-002',
+      naam: 'Koffiemok XL',
+      voorraad: 3,
+      min_voorraad: 10,
+      beschrijving: 'Grote keramische mok 500ml',
       gtins: [
         { gtin: '8710009876543', type: 'EAN-13', channels: ['Shopify', 'bol.com', 'Amazon'], landen: ['NL', 'BE', 'DE'] }
       ],
       created_at: new Date().toISOString()
     },
     {
-      id: genId(), sku: 'PROD-003', naam: 'Katoenen Tote Bag',
-      voorraad: 0, min_voorraad: 5, beschrijving: 'Bio-katoen draagtas',
+      id: genId(),
+      sku: 'PROD-003',
+      naam: 'Katoenen Tote Bag',
+      voorraad: 0,
+      min_voorraad: 5,
+      beschrijving: 'Bio-katoen draagtas',
       gtins: [
         { gtin: '8710005551234', type: 'EAN-13', channels: ['Shopify'], landen: ['NL'] }
       ],
@@ -1786,16 +1798,13 @@ function loadDemoData() {
     }
   ];
   state.mutaties = [
-    { id: genId(), artikel_id: state.artikelen[0].id, artikel_naam: 'Houten Snijplank Premium', type: 'in', aantal: 50, kanaal: 'Handmatig', created_at: new Date(Date.now() - 86400000).toISOString() },
-    { id: genId(), artikel_id: state.artikelen[1].id, artikel_naam: 'Koffiemok XL', type: 'out', aantal: 7, kanaal: 'bol.com', created_at: new Date(Date.now() - 3600000).toISOString() },
-    { id: genId(), artikel_id: state.artikelen[0].id, artikel_naam: 'Houten Snijplank Premium', type: 'out', aantal: 3, kanaal: 'Shopify', created_at: new Date().toISOString() }
+    { id: genId(), artikel_id: state.artikelen[0].id, artikel_naam: 'Houten Snijplank Premium', type: 'in',  aantal: 50, kanaal: 'Handmatig', created_at: new Date(Date.now() - 86400000).toISOString() },
+    { id: genId(), artikel_id: state.artikelen[1].id, artikel_naam: 'Koffiemok XL',            type: 'out', aantal: 7,  kanaal: 'bol.com',  created_at: new Date(Date.now() - 3600000).toISOString() },
+    { id: genId(), artikel_id: state.artikelen[0].id, artikel_naam: 'Houten Snijplank Premium', type: 'out', aantal: 3,  kanaal: 'Shopify', created_at: new Date().toISOString() }
   ];
   saveState();
 }
 
-// ========================
-// INIT
-// ========================
 loadState();
 loadDemoData();
 renderDashboard();
