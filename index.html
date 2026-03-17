@@ -1671,6 +1671,17 @@ function saveConfig() {
   showToast('Verbinding opgeslagen ✓', 'success');
 }
 
+  function saveShopifyConfig() {
+  const storeUrl = document.getElementById('cfg-shopify-url').value.trim();
+  const token = document.getElementById('cfg-shopify-token').value.trim();
+  const edgeUrl = document.getElementById('cfg-shopify-edge').value.trim();
+
+  state.shopify = { storeUrl, token, edgeUrl };
+  localStorage.setItem('stockpro-shopify', JSON.stringify(state.shopify));
+
+  showToast('Shopify instellingen opgeslagen.', 'success');
+}
+
 function updateDbStatus(connected) {
   document.getElementById('statusDot').className = 'status-dot' + (connected ? ' connected' : '');
   document.getElementById('statusText').textContent = connected ? 'Verbonden' : 'Niet verbonden';
