@@ -1162,6 +1162,65 @@ let state = {
   scannerMode: 'inkomend'
 };
 
+async function loadFromSupabase() {
+  if (!state.config || !state.config.url || !state.config.key) return;
+  if (!window.supabase || !window.supabase.createClient) {
+    showToast('Supabase client niet gevonden.', 'error');
+    return;
+  }
+
+  const client = window.supabase.createClient(state.config.url, state.config.key);
+
+  // Artikelen ophalen (incl. status, shopify_id)
+  const { data: artikelen, error: artErr } = await client
+    .from('artikelen')
+    .select('id, sku, naam, beschrijving, voorraad, min_voorraad, status, shopify_id, created_at')
+    .order('naam', { ascending: true });
+
+  if (artErr) {
+    console.error(artErr);
+    showToast('Fout bij laden artikelen uit Supabase.', 'error');
+    return;
+  }
+
+  // GTINs ophalen
+  const { data: gtins, error: gtinErr } = await client
+    .from('gtins')
+    .select('id, artikel_id, gtin, channels, landen, created_at');
+
+  if (gtinErr) {
+    console.error(gtinErr);
+    showToast('Fout bij laden GTINs uit Supabase.', 'error');
+    return;
+  }
+
+  // Mutaties (optioneel direct uit Supabase i.p.v. demo)
+  const { data: mutaties, error: mutErr } = await client
+    .from('mutaties')
+    .select('id, artikel_id, artikel_naam, type, aantal, gtin, kanaal, notitie, created_at')
+    .order('created_at', { ascending: false });
+
+  if (mutErr) {
+    console.error(mutErr);
+    showToast('Fout bij laden mutaties uit Supabase.', 'error');
+  }
+
+  // In state zetten
+  state.artikelen = artikelen || [];
+  state.mutaties = mutaties || [];
+
+  // GTINs mappen aan artikelen (als je per artikel een lijst wilt)
+  state.artikelen.forEach(a => {
+    a.gtins = (gtins || []).filter(g => g.artikel_id === a.id);
+  });
+
+  saveState && saveState(); // alleen als je al een saveState() hebt
+  renderDashboard && renderDashboard();
+  renderArtikelen && renderArtikelen();
+  renderMutaties && renderMutaties();
+  showToast('Data uit Supabase geladen.', 'success');
+}
+
 function loadState() {
   try {
     const saved = localStorage.getItem('stockpro-data');
