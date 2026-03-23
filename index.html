@@ -1162,6 +1162,9 @@ let state = {
   scannerMode: 'inkomend'
 };
 
+/* ===========================
+   SUPABASE LADEN
+   =========================== */
 async function loadFromSupabase() {
   if (!state.config || !state.config.url || !state.config.key) return;
   if (!window.supabase || !window.supabase.createClient) {
@@ -1171,14 +1174,14 @@ async function loadFromSupabase() {
 
   const client = window.supabase.createClient(state.config.url, state.config.key);
 
-  // Artikelen ophalen (incl. status, shopify_id)
+  // Artikelen ophalen (zonder gtins-kolom; die zit in aparte tabel)
   const { data: artikelen, error: artErr } = await client
     .from('artikelen')
     .select('id, sku, naam, beschrijving, voorraad, min_voorraad, status, shopify_id, created_at')
     .order('naam', { ascending: true });
 
   if (artErr) {
-    console.error(artErr);
+    console.error('Artikelen fout:', artErr);
     showToast('Fout bij laden artikelen uit Supabase.', 'error');
     return;
   }
@@ -1189,38 +1192,40 @@ async function loadFromSupabase() {
     .select('id, artikel_id, gtin, channels, landen, created_at');
 
   if (gtinErr) {
-    console.error(gtinErr);
+    console.error('GTINs fout:', gtinErr);
     showToast('Fout bij laden GTINs uit Supabase.', 'error');
     return;
   }
 
-  // Mutaties (optioneel direct uit Supabase i.p.v. demo)
+  // Mutaties ophalen
   const { data: mutaties, error: mutErr } = await client
     .from('mutaties')
     .select('id, artikel_id, artikel_naam, type, aantal, gtin, kanaal, notitie, created_at')
     .order('created_at', { ascending: false });
 
   if (mutErr) {
-    console.error(mutErr);
+    console.error('Mutaties fout:', mutErr);
     showToast('Fout bij laden mutaties uit Supabase.', 'error');
   }
 
-  // In state zetten
-  state.artikelen = artikelen || [];
+  state.artikelen = (artikelen || []).map(a => ({ ...a }));
   state.mutaties = mutaties || [];
 
-  // GTINs mappen aan artikelen (als je per artikel een lijst wilt)
+  const allGtins = gtins || [];
   state.artikelen.forEach(a => {
-    a.gtins = (gtins || []).filter(g => g.artikel_id === a.id);
+    a.gtins = allGtins.filter(g => g.artikel_id === a.id);
   });
 
-  saveState && saveState(); // alleen als je al een saveState() hebt
-  renderDashboard && renderDashboard();
-  renderArtikelen && renderArtikelen();
-  renderMutaties && renderMutaties();
+  saveState();
+  renderDashboard();
+  renderArtikelen();
+  renderMutaties();
   showToast('Data uit Supabase geladen.', 'success');
 }
 
+/* ===========================
+   STATE OPSLAAN / LADEN
+   =========================== */
 function loadState() {
   try {
     const saved = localStorage.getItem('stockpro-data');
@@ -1243,7 +1248,9 @@ function loadState() {
       document.getElementById('cfg-shopify-token').value = state.shopify.token || '';
       document.getElementById('cfg-shopify-edge').value = state.shopify.edgeUrl || '';
     }
-  } catch(e) {}
+  } catch (e) {
+    console.error('loadState error', e);
+  }
 }
 
 function saveState() {
@@ -1253,6 +1260,9 @@ function saveState() {
   }));
 }
 
+/* ===========================
+   NAVIGATIE
+   =========================== */
 function navigate(page) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.getElementById('page-' + page).classList.add('active');
@@ -1279,12 +1289,14 @@ function navigate(page) {
   if (page === 'mutaties') renderMutaties();
 }
 
+/* ===========================
+   MODALS & GTIN FORM
+   =========================== */
 let gtinCounter = 0;
 
 function openModal(id) {
   document.getElementById(id).classList.add('open');
 
-  // Alleen resetten als we echt een nieuw artikel maken
   if (id === 'artikelModal') {
     const isEdit = !!document.getElementById('edit-id').value;
     if (!isEdit) {
@@ -1300,7 +1312,6 @@ function openModal(id) {
     }
   }
 }
-
 
 function closeModal(id) {
   document.getElementById(id).classList.remove('open');
@@ -1325,27 +1336,27 @@ function addGTIN(data = {}) {
       <div class="form-group">
         <label class="form-label">Type</label>
         <select class="form-select" id="gtin-type-${id}">
-          <option value="EAN-13" ${data.type==='EAN-13'?'selected':''}>EAN-13</option>
-          <option value="UPC-A" ${data.type==='UPC-A'?'selected':''}>UPC-A</option>
-          <option value="ISBN" ${data.type==='ISBN'?'selected':''}>ISBN</option>
-          <option value="GTIN-14" ${data.type==='GTIN-14'?'selected':''}>GTIN-14</option>
+          <option value="EAN-13" ${data.type === 'EAN-13' ? 'selected' : ''}>EAN-13</option>
+          <option value="UPC-A" ${data.type === 'UPC-A' ? 'selected' : ''}>UPC-A</option>
+          <option value="ISBN" ${data.type === 'ISBN' ? 'selected' : ''}>ISBN</option>
+          <option value="GTIN-14" ${data.type === 'GTIN-14' ? 'selected' : ''}>GTIN-14</option>
         </select>
       </div>
     </div>
     <div style="margin-top:10px;">
       <div class="form-label" style="margin-bottom:6px">Kanalen</div>
       <div class="gtin-channels" id="gtin-channels-${id}">
-        <span class="channel-toggle ${channels.includes('Shopify')?'active-shopify':''}" onclick="toggleChannel(this, ${id}, 'Shopify')">Shopify</span>
-        <span class="channel-toggle ${channels.includes('bol.com')?'active-bol':''}" onclick="toggleChannel(this, ${id}, 'bol.com')">bol.com</span>
-        <span class="channel-toggle ${channels.includes('Amazon')?'active-amazon':''}" onclick="toggleChannel(this, ${id}, 'Amazon')">Amazon</span>
+        <span class="channel-toggle ${channels.includes('Shopify') ? 'active-shopify' : ''}" onclick="toggleChannel(this, ${id}, 'Shopify')">Shopify</span>
+        <span class="channel-toggle ${channels.includes('bol.com') ? 'active-bol' : ''}" onclick="toggleChannel(this, ${id}, 'bol.com')">bol.com</span>
+        <span class="channel-toggle ${channels.includes('Amazon') ? 'active-amazon' : ''}" onclick="toggleChannel(this, ${id}, 'Amazon')">Amazon</span>
       </div>
     </div>
     <div style="margin-top:10px;">
       <div class="form-label" style="margin-bottom:6px">Landen</div>
       <div class="gtin-channels" id="gtin-landen-${id}">
-        <span class="country-toggle ${landen.includes('NL')?'active':''}" onclick="toggleLand(this, ${id}, 'NL')">NL</span>
-        <span class="country-toggle ${landen.includes('BE')?'active':''}" onclick="toggleLand(this, ${id}, 'BE')">BE</span>
-        <span class="country-toggle ${landen.includes('DE')?'active':''}" onclick="toggleLand(this, ${id}, 'DE')">DE</span>
+        <span class="country-toggle ${landen.includes('NL') ? 'active' : ''}" onclick="toggleLand(this, ${id}, 'NL')">NL</span>
+        <span class="country-toggle ${landen.includes('BE') ? 'active' : ''}" onclick="toggleLand(this, ${id}, 'BE')">BE</span>
+        <span class="country-toggle ${landen.includes('DE') ? 'active' : ''}" onclick="toggleLand(this, ${id}, 'DE')">DE</span>
       </div>
     </div>
   </div>`;
@@ -1393,6 +1404,9 @@ function collectGTINs() {
   return result;
 }
 
+/* ===========================
+   ARTIKELEN CRUD
+   =========================== */
 function saveArtikel() {
   const id = document.getElementById('edit-id').value;
   const sku = document.getElementById('form-sku').value.trim();
@@ -1533,6 +1547,9 @@ function renderArtikelen(filter = '') {
   `;
 }
 
+/* ===========================
+   MUTATIES
+   =========================== */
 function openMutatieModal(type) {
   document.getElementById('mut-type').value = type;
   document.getElementById('mutatieTitle').textContent = type === 'in' ? 'Inkomende Voorraad' : 'Uitgaande Voorraad';
@@ -1608,6 +1625,9 @@ function renderMutaties() {
   `).join('');
 }
 
+/* ===========================
+   DASHBOARD
+   =========================== */
 function renderDashboard() {
   document.getElementById('stat-artikelen').textContent = state.artikelen.length;
   document.getElementById('stat-voorraad').textContent = state.artikelen.reduce((s, a) => s + (a.voorraad || 0), 0);
@@ -1640,6 +1660,9 @@ function renderDashboard() {
   `).join('');
 }
 
+/* ===========================
+   SCANNER
+   =========================== */
 function switchScannerTab(mode, el) {
   state.scannerMode = mode;
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
@@ -1719,7 +1742,7 @@ function processScan() {
         <div style="font-size:11px; color:var(--text2)">SKU: ${foundArtikel.sku} · GTIN: ${val}${foundGTIN?.channels?.length ? ' · ' + foundGTIN.channels.join(', ') : ''}</div>
       </div>
       <div style="text-align:right">
-        <div style="font-family:'Syne',sans-serif; font-size:20px; font-weight:800; color:${type==='in'?'var(--accent)':'var(--danger)'}">
+        <div style="font-family:'Syne',sans-serif; font-size:20px; font-weight:800; color:${type === 'in' ? 'var(--accent)' : 'var(--danger)'}">
           ${type === 'in' ? '+' : '-'}${qty}
         </div>
         <div style="font-size:11px; color:var(--text2)">Nu: ${foundArtikel.voorraad} stuks</div>
@@ -1731,10 +1754,13 @@ function processScan() {
   document.getElementById('scanInput').value = '';
   document.getElementById('scannerArea').style.borderColor = 'var(--accent)';
   setTimeout(() => { document.getElementById('scannerArea').style.borderColor = ''; }, 800);
-  showToast(foundArtikel.naam + ': ' + (type==='in'?'+':'-') + qty + ' verwerkt', 'success');
+  showToast(foundArtikel.naam + ': ' + (type === 'in' ? '+' : '-') + qty + ' verwerkt', 'success');
   renderDashboard();
 }
 
+/* ===========================
+   INSTELLINGEN / HELPERS
+   =========================== */
 function saveConfig() {
   const url = document.getElementById('cfg-url').value.trim();
   const key = document.getElementById('cfg-key').value.trim();
@@ -1777,8 +1803,8 @@ function genId() {
 function formatDate(iso) {
   const d = new Date(iso);
   return d.toLocaleDateString('nl-NL', {
-    day:'2-digit', month:'2-digit', year:'numeric',
-    hour:'2-digit', minute:'2-digit'
+    day: '2-digit', month: '2-digit', year: 'numeric',
+    hour: '2-digit', minute: '2-digit'
   });
 }
 
@@ -1796,6 +1822,9 @@ function copySQL() {
   navigator.clipboard.writeText(sql).then(() => showToast('SQL gekopieerd.', 'success'));
 }
 
+/* ===========================
+   DEMO-DATA
+   =========================== */
 function loadDemoData() {
   if (state.artikelen.length) return;
   state.artikelen = [
@@ -1845,6 +1874,9 @@ function loadDemoData() {
   saveState();
 }
 
+/* ===========================
+   INIT
+   =========================== */
 loadState();
 loadDemoData();
 renderDashboard();
@@ -1855,5 +1887,6 @@ document.addEventListener('click', e => {
   }
 });
 </script>
+
 </body>
 </html>
